@@ -1,0 +1,45 @@
+# Fine-tuning Configuration for TinyLlama — Bank Transaction Intelligence
+
+model:
+  base_model_hf: "TinyLlama/TinyLlama-1.1B-Chat-v1.0"  # HF model id used for LoRA training
+  ollama_finetuned_tag: "tinyllama-banktx:latest"       # Tag registered with `ollama create`
+  quantization: "q8_0"  # GGUF export type used when converting the merged model (not a training-time quantization)
+
+training:
+  epochs: 8
+  batch_size: 8
+  learning_rate: 2.0e-4
+  warmup_ratio: 0.1
+  max_length: 512
+  gradient_accumulation_steps: 2
+
+  # LoRA parameters (for parameter-efficient fine-tuning)
+  use_lora: true
+  lora_rank: 16
+  lora_alpha: 32
+  lora_dropout: 0.05
+
+data:
+  train_file: "data/curated/train.jsonl"
+  eval_file: "data/curated/eval.jsonl"
+  test_file: "data/curated/test.jsonl"
+  train_split: 0.8
+  eval_split: 0.1
+  test_split: 0.1
+
+  # Data preprocessing
+  shuffle: true
+  seed: 42
+  remove_duplicates: true
+
+output:
+  output_dir: "data/output/checkpoint"
+  save_steps: 50
+  eval_steps: 25
+  logging_steps: 5
+  save_total_limit: 3  # Keep only top 3 checkpoints
+  load_best_model_at_end: true  # Early stopping via best eval loss
+
+evaluation:
+  metric: "perplexity"  # perplexity, bleu, rouge
+  use_test_set: true

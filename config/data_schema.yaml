@@ -1,0 +1,42 @@
+# Data Format Schema for Fine-tuning
+
+# Expected format for training data (JSONL)
+training_data:
+  format: "jsonl"  # One JSON object per line
+  required_fields:
+    - instruction    # Task description
+    - input          # Optional context/input
+    - output         # Expected model output
+
+  example: |
+    {"instruction": "Classify the sentiment", "input": "This product is amazing!", "output": "positive"}
+    {"instruction": "Translate to Spanish", "input": "Hello world", "output": "Hola mundo"}
+
+# Alternative format (CSV)
+csv_format:
+  columns:
+    - instruction
+    - input
+    - output
+  delimiter: ","
+  encoding: "utf-8"
+
+# Validation rules
+validation:
+  min_instruction_length: 5      # Characters
+  max_instruction_length: 500
+  min_output_length: 1
+  max_output_length: 2000
+
+  # Remove samples that violate these rules
+  skip_invalid: true
+
+  # Trim whitespace and normalize unicode
+  normalize_text: true
+
+# Data statistics (for reference)
+statistics:
+  typical_dataset_size: 1000       # Sample size for demo
+  typical_avg_seq_length: 256
+  typical_instruction_length: 100
+  typical_output_length: 150
