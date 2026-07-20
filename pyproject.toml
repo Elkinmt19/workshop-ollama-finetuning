@@ -1,0 +1,28 @@
+[project]
+name = "workshop-databricks-ollama-finetuning"
+version = "0.1.0"
+description = "Workshop: Fine-tuning a small Llama model with Ollama and LoRA on Google Colab"
+readme = "README.md"
+requires-python = ">=3.12"
+authors = [{ name = "Heimr ML Platform Team" }]
+dependencies = [
+    "ollama>=0.2.0",
+    "pydantic>=2.7.0",
+    "pydantic-settings>=2.3.0",
+    "python-dotenv>=1.0.0",
+    "pandas>=2.2.0",
+    "numpy>=2.0.0",
+    "torch>=2.3.0",
+    "transformers>=4.41.0",
+    "peft>=0.10.0",
+    "accelerate>=0.30.1",
+    "matplotlib>=3.8.4",
+    "jupyter>=1.1.1",
+    "notebook>=7.1.0",
+    "ipywidgets>=8.1.0",
+    "requests>=2.31.0",
+    "pyyaml>=6.0",
+]
+
+[tool.uv]
+package = false
