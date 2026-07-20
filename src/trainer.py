@@ -31,10 +31,16 @@ class ChatDataset(Dataset):
 
     def _encode(self, example: TrainingExample) -> dict:
         messages = example.to_chat_messages()
-        prompt_ids = self.tokenizer.apply_chat_template(
-            [messages[0]], tokenize=True, add_generation_prompt=True
+        prompt_text = self.tokenizer.apply_chat_template(
+            [messages[0]], tokenize=False, add_generation_prompt=True
         )
-        full_ids = self.tokenizer.apply_chat_template(messages, tokenize=True)
+        full_text = self.tokenizer.apply_chat_template(messages, tokenize=False)
+
+        # Tokenize the rendered text directly rather than trusting apply_chat_template's
+        # tokenize=True return type, which varies across transformers/tokenizers versions
+        # (some return plain int lists, others return tokenizers.Encoding objects).
+        prompt_ids = self.tokenizer(prompt_text, add_special_tokens=False)["input_ids"]
+        full_ids = self.tokenizer(full_text, add_special_tokens=False)["input_ids"]
 
         full_ids = full_ids[: self.max_length]
         prompt_len = min(len(prompt_ids), len(full_ids))
