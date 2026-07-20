@@ -1,10 +1,10 @@
 [project]
-name = "workshop-databricks-ollama-finetuning"
+name = "workshop-ollama-finetuning"
 version = "0.1.0"
 description = "Workshop: Fine-tuning a small Llama model with Ollama and LoRA on Google Colab"
 readme = "README.md"
 requires-python = ">=3.12"
-authors = [{ name = "Heimr ML Platform Team" }]
+authors = [{ name = "Elkinmt19", email = "elkin02011@hotmail.com" }]
 dependencies = [
     "ollama>=0.2.0",
     "pydantic>=2.7.0",
