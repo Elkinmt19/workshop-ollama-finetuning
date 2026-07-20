@@ -206,6 +206,13 @@ class OllamaTrainer:
         tokenizer.save_pretrained(str(merged_dir))
 
         log_history = trainer.state.log_history
+
+        # Release GPU memory now: Ollama serves the exported GGUF from a separate
+        # process on the same GPU, and PyTorch's caching allocator otherwise keeps
+        # training's VRAM reserved for the rest of this kernel's lifetime.
+        del model, merged_model, trainer
+        if device == "cuda":
+            torch.cuda.empty_cache()
         train_losses = [entry["loss"] for entry in log_history if "loss" in entry]
 
         result = {
